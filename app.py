@@ -8,15 +8,15 @@ from langchain.vectorstores import FAISS
 from langchain.chat_models import ChatOpenAI
 from langchain.chains import RetrievalQA
 
-st.title("🦴 Facharzt Orthopädie Trainer")
+st.set_page_config(page_title="🦴 Facharzt Orthopädie Trainer")
+st.title("🦴 Facharzt Orthopädie & Unfallchirurgie Trainer")
 
+# أدخل مفتاح OpenAI الخاص بك هنا
 openai_api_key = st.text_input("OpenAI API Key", type="password")
 
-# روابط PDF من Google Drive
+# رابط PDF من Google Drive (واحد فقط الآن)
 pdf_links = [
-    "https://drive.google.com/uc?id=FILE_ID_1",
-    "https://drive.google.com/uc?id=FILE_ID_2",
-    "https://drive.google.com/uc?id=FILE_ID_3"
+    "https://drive.google.com/uc?id=1b5TuW29kKL16idA7YcrEfuuQD4_nuIC3"
 ]
 
 @st.cache_resource
