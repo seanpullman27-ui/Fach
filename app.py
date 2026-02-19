@@ -1,7 +1,7 @@
 import streamlit as st
 import requests
 from io import BytesIO
-from langchain.document_loaders import PyPDFLoader
+from PyPDF2 import PdfReader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.vectorstores import Chroma
@@ -11,10 +11,10 @@ from langchain.chains import RetrievalQA
 st.set_page_config(page_title="🦴 Facharzt Orthopädie Trainer")
 st.title("🦴 Facharzt Orthopädie & Unfallchirurgie Trainer")
 
-# أدخل مفتاح OpenAI الخاص بك هنا
+# أدخل مفتاح OpenAI
 openai_api_key = st.text_input("OpenAI API Key", type="password")
 
-# رابط PDF من Google Drive (واحد فقط الآن)
+# رابط PDF من Google Drive
 pdf_links = [
     "https://drive.google.com/uc?id=1b5TuW29kKL16idA7YcrEfuuQD4_nuIC3"
 ]
@@ -25,9 +25,13 @@ def load_documents():
     for link in pdf_links:
         r = requests.get(link)
         f = BytesIO(r.content)
-        loader = PyPDFLoader(f)
-        docs.extend(loader.load())
+        reader = PdfReader(f)
+        text = ""
+        for page in reader.pages:
+            text += page.extract_text() + "\n"
+        docs.append({"page_content": text, "metadata": {}})
     
+    # تقسيم النص
     splitter = RecursiveCharacterTextSplitter(
         chunk_size=1000,
         chunk_overlap=200
