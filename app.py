@@ -4,7 +4,7 @@ from io import BytesIO
 from langchain.document_loaders import PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.embeddings.openai import OpenAIEmbeddings
-from langchain.vectorstores import FAISS
+from langchain.vectorstores import Chroma
 from langchain.chat_models import ChatOpenAI
 from langchain.chains import RetrievalQA
 
@@ -35,7 +35,7 @@ def load_documents():
     split_docs = splitter.split_documents(docs)
     
     embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key)
-    vectorstore = FAISS.from_documents(split_docs, embeddings)
+    vectorstore = Chroma.from_documents(split_docs, embeddings)
     
     return vectorstore
 
